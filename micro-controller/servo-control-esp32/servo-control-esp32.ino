@@ -12,15 +12,27 @@ void setup() {
 void loop() {
   // Serial.available() devuelve la cantidad de bytes q se recibio --> si se recibio algo entra en if para leer los bytes
   while(Serial.available() > 0){
-    incomingString = "";
     incomingString = Serial.readStringUntil('\n');
     Serial.print("Message: ");
     Serial.println(incomingString);
+  }
+  Serial.println(incomingString);
+
+  if(incomingString == "center"){
     digitalWrite(LED_BUILTIN, HIGH);
+    Serial.print("Moviendo al Centro");
   }
-  
-  if(millis() >= newMillis + TICK_LED){
-    newMillis = millis();
+
+  else if(incomingString == "right"){
     digitalWrite(LED_BUILTIN, LOW);
+    Serial.print("Moviendo a la derecha");
   }
+
+
+  // else if(millis() >= newMillis + TICK_LED){
+  //   newMillis = millis();
+  //   digitalWrite(LED_BUILTIN, LOW);
+  // }
+
+  
 }

@@ -50,7 +50,7 @@ while ret:
       if(0 < x < 214):
         position = 'Left'
         print(position)
-        #ser.write(b'left\n')
+        ser.write(b'left\n')
       
       elif(214 < x < 428):
         position = 'Center'
@@ -60,7 +60,7 @@ while ret:
       elif(428 < x < 640):
         position = 'Right'
         print(position)
-        #ser.write(b'right\n')
+        ser.write(b'right\n')
       
       # marcar centro
       cv2.circle(frameF, (x, y), 8, (183, 183, 22), -1)
