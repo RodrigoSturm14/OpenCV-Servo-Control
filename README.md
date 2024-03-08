@@ -14,7 +14,7 @@ Object detection system capable of controlling the position of a servo motor by 
 # Demo and overview
 In order to know the position of the object, screen divisions were made:
 
-![OpenCV-Servo-Control-gif-1](https://github.com/RodrigoSturm14/OpenCV-Servo-Control/assets/105557226/21e43c64-d8b9-4ac4-a002-a0d1db4102cb)
+![OpenCV-Servo-Control-gif-2](https://github.com/RodrigoSturm14/OpenCV-Servo-Control/assets/105557226/95701882-da75-4f49-a1c8-e50af8db7d49)
 
 Turn on an LED if the object is in the center division, and turn it off whether the object is on the left or in the right
 
