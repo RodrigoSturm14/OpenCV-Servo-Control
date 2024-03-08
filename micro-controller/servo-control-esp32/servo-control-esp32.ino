@@ -17,8 +17,8 @@ void loop() {
     Serial.println(incomingString);
   }
   Serial.println(incomingString);
-
-  if(incomingString == "center"){
+  // en el final de incomingString no tiene \n
+  if(incomingString == "center"){ 
     digitalWrite(LED_BUILTIN, HIGH);
     Serial.print("Moviendo al Centro");
   }
@@ -26,6 +26,11 @@ void loop() {
   else if(incomingString == "right"){
     digitalWrite(LED_BUILTIN, LOW);
     Serial.print("Moviendo a la derecha");
+  }
+
+  else if(incomingString == "left"){
+    digitalWrite(LED_BUILTIN, LOW);
+    Serial.print("Moviendo a la izquierda");
   }
 
 
