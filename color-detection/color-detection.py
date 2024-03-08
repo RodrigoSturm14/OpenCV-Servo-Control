@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import serial
+import throttle
 from getHSVcolor import get_limits
 
 # COM5 es correcto; CERRAR ARDUINO SERIAL MONITOR Y CONECTAR ESP32 ANTES DE INICIAR PROGRAMA --> VA A TIRAR 
@@ -9,6 +10,24 @@ ser = serial.Serial(
   port= "COM5",
   baudrate= 115200
 )
+
+@throttle.wrap(0.200, 1)
+def send_position(position_in):
+  if(0 < x < 214):
+    position_in = 'Left'
+    print(position_in)
+    ser.write(b'left\n')
+  
+  elif(214 < x < 428):
+    position_in = 'Center'
+    print(position_in)
+    ser.write(b'center\n')
+  
+  elif(428 < x < 640):
+    position_in = 'Right'
+    print(position_in)
+    ser.write(b'right\n')
+  
 
 # BGR_COLOR = [0, 255, 0]
 # lowerLimit, upperLimit = get_limits(BGR_COLOR)
@@ -46,21 +65,9 @@ while ret:
       # obtener centro del area
       x = int(M["m10"] / M["m00"])
       y = int(M["m01"] / M["m00"])
-      
-      if(0 < x < 214):
-        position = 'Left'
-        print(position)
-        ser.write(b'left\n')
-      
-      elif(214 < x < 428):
-        position = 'Center'
-        print(position)
-        ser.write(b'center\n')
-      
-      elif(428 < x < 640):
-        position = 'Right'
-        print(position)
-        ser.write(b'right\n')
+
+      # throttle estos if
+      send_position(position)
       
       # marcar centro
       cv2.circle(frameF, (x, y), 8, (183, 183, 22), -1)
