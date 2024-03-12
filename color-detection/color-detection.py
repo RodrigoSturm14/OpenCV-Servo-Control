@@ -7,8 +7,8 @@ from getHSVcolor import get_limits
 # COM5 es correcto; CERRAR ARDUINO SERIAL MONITOR Y CONECTAR ESP32 ANTES DE INICIAR PROGRAMA --> VA A TIRAR 
 # ERROR DE PERMISOS 
 ser = serial.Serial(
-  port= "COM5",
-  baudrate= 115200
+  port= "COM8",
+  baudrate= 9600
 )
 
 @throttle.wrap(0.200, 1)
