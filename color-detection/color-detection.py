@@ -42,7 +42,20 @@ def send_position(x: int) -> str:
   return position
 
 def plot_frame(frame, contour, x: int, y: int):
-  ...
+  # marcar centro
+  cv2.circle(frame, (x, y), 8, (183, 183, 22), -1)
+  # dibujar el contorno convexHull
+  new_contour = cv2.convexHull(contour)
+  cv2.drawContours(frame, [new_contour], 0, (255, 0, 0), 3)
+  # dibujar coordenadas (x, y) y posicion
+  cv2.putText(frame, 'x: {}; y: {}'.format(x, y), 
+              (x + 15, y + 5), 
+              cv2.FONT_HERSHEY_SIMPLEX, 
+              1.1, (0, 144, 255), 3)
+  # cv2.putText(frameF, '{}'.format(position), (x + 40, y + 40), cv2.FONT_HERSHEY_SIMPLEX, 1.1, (0, 0, 255), 3)
+
+  return frame
+
 
 # BGR_COLOR = [0, 255, 0]
 # lowerLimit, upperLimit = get_limits(BGR_COLOR)
@@ -82,17 +95,7 @@ def main() -> None:
         # throttle estos if
         send_position(x)
         
-        plot_frame(frameF, c, x, y)
-
-        # marcar centro
-        cv2.circle(frameF, (x, y), 8, (183, 183, 22), -1)
-        # dibujar el contorno convexHull
-        new_contour = cv2.convexHull(c)
-        cv2.drawContours(frameF, [new_contour], 0, (255, 0, 0), 3)
-
-        # bibujar coordenadas (x, y) y posicion
-        cv2.putText(frameF, 'x: {}; y: {}'.format(x, y), (x + 15, y + 5), cv2.FONT_HERSHEY_SIMPLEX, 1.1, (0, 144, 255), 3)
-        # cv2.putText(frameF, '{}'.format(position), (x + 40, y + 40), cv2.FONT_HERSHEY_SIMPLEX, 1.1, (0, 0, 255), 3)
+        frameF = plot_frame(frameF, c, x, y)
 
     cv2.imshow('camara', frameF)
     if cv2.waitKey(40) & 0xFF == ord('q'):
