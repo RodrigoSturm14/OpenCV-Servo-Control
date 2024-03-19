@@ -3,6 +3,13 @@ import numpy as np
 import serial
 import throttle
 from getHSVcolor import get_limits
+from credentials import WEBCAM_URL
+
+# BGR_COLOR = [0, 255, 0]
+# lowerLimit, upperLimit = get_limits(BGR_COLOR)
+# limites color verde en hsv
+lowerLimit = np.array([36, 50, 70])
+upperLimit = np.array([89, 255, 255])
 
 # COM5 es correcto; CERRAR ARDUINO SERIAL MONITOR Y CONECTAR ESP32 ANTES DE INICIAR PROGRAMA --> VA A TIRAR 
 # ERROR DE PERMISOS 
@@ -56,37 +63,26 @@ def plot_frame(frame, contour, x: int, y: int):
 
   return frame
 
-
-# BGR_COLOR = [0, 255, 0]
-# lowerLimit, upperLimit = get_limits(BGR_COLOR)
-
-# limites color verde en hsv
-lowerLimit = np.array([36, 50, 70])
-upperLimit = np.array([89, 255, 255])
-
 def main() -> None:
   # leer camara
-  webcam = cv2.VideoCapture(0)
+  webcam = cv2.VideoCapture(WEBCAM_URL)
   # ver camara
   ret = True
   while ret:
     ret, frame = webcam.read()
     # flipear frame horizontalmente
     frameF = cv2.flip(frame, 1)
-
     hsvFrame = cv2.cvtColor(frameF, cv2.COLOR_BGR2HSV)
     # crear mascara
     mask = cv2.inRange(hsvFrame, lowerLimit, upperLimit)
     # extraer contornos (puntos limites de las areas blancas) de la mascara --> la imagen q 
     # se usa tiene q estar en binario
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
     # dibujar divisiones de la pantalla (left, center, right)
     # cv2.line(frameF, (214, 0), (214, 480), (0, 255, 0), 5)
     # cv2.line(frameF, (428, 0), (428, 480), (0, 255, 0), 5)
 
     for c in contours:
-      
       area = cv2.contourArea(c)
       if area > 6000:
         # dibujar contornos de areas mayores a 6000
@@ -94,10 +90,9 @@ def main() -> None:
         x, y = get_contour_center(c)
         # throttle estos if
         send_position(x)
-        
         frameF = plot_frame(frameF, c, x, y)
 
-    cv2.imshow('camara', frameF)
+    #cv2.imshow('camara', frameF)
     if cv2.waitKey(40) & 0xFF == ord('q'):
       ser.close()
       break
